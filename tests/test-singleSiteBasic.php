@@ -56,6 +56,8 @@ class SingleSiteBasic extends WP_UnitTestCase {
 		// Do cleaning
 		Clean_Expired_Transients::clean();
 
+		sleep( 2 );
+
 		// Test direct retrieval of transient value
 		$raw_key2 = get_option( '_transient_key2' );
 		$this->assertFalse( $raw_key2 );
