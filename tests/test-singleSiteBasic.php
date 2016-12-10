@@ -9,6 +9,9 @@
  * Test case for single site.
  */
 class SingleSiteBasic extends WP_UnitTestCase {
+	/**
+	 * Test default behaviour.
+	 */
 	public function test_without_cleaning() {
 		// Test setting of transient
 		$set_key1 = set_transient( 'key1', 'value1', 5 );
