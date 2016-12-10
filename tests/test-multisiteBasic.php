@@ -1,6 +1,6 @@
 <?php
 /**
- * Class SingleSiteBasic
+ * Class SingleSiteSite
  *
  * @package Clean_Expired_site_transients
  */
@@ -54,7 +54,7 @@ class SingleSiteSite extends WP_UnitTestCase {
 		sleep( 30 );
 
 		// Do cleaning
-		Clean_Expired_site_transients::clean();
+		Clean_Expired_Transients::clean();
 
 		sleep( 2 );
 
