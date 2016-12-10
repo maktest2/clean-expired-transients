@@ -50,13 +50,12 @@ class SingleSiteSite extends WP_UnitTestCase {
 		$get_key2 = get_site_transient( 'key2' );
 		$this->assertEquals( $get_key2, 'value2' );
 
-		// Sleep for half a minute
-		sleep( 30 );
+		// Sleep for two minutes
+		sleep( 2 * MINUTE_IN_SECONDS );
 
 		// Do cleaning
 		Clean_Expired_Transients::clean();
 
-		sleep( 2 );
 
 		// Test direct retrieval of transient value
 		$raw_key2 = get_option( '_site_transient_key2' );
