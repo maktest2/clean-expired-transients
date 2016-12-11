@@ -13,42 +13,58 @@ class SingleSiteBasic extends WP_UnitTestCase {
 	 * Test default behaviour.
 	 */
 	public function test_without_cleaning() {
-		// Test setting of transient
-		$set_key1 = set_transient( 'key1', 'value1', 5 );
-		$this->assertTrue( $set_key1 );
+		// Setting transient should be true
+		$this->assertTrue( set_transient( 'key1', 'value1', 5 ) );
 
-		// Test retrieving of transient
-		$get_key1 = get_transient( 'key1' );
-		$this->assertEquals( $get_key1, 'value1' );
+		// Direct retrieval of transient value should return setted value
+		$this->assertEquals( get_option( '_transient_key1' ), 'value1' );
 
-		// Sleep for half a minute
-		sleep( 30 );
+		// Direct retrieval of transient timeout should be integer and less than current time`
+		$raw_key1_timeout_before_sleep = get_option( '_transient_timeout_key1' );
+		$this->assertTrue( is_int( $raw_key1_timeout_before_sleep ) );
+		$this->assertLessThan( time(), $raw_key1_timeout_before_sleep );
 
-		// Test direct retrieval of transient value
-		$raw_key1 = get_option( '_transient_key1' );
-		$this->assertEquals( $raw_key1, 'value1' );
+		// Getting of transient should return setted value
+		$this->assertEquals( get_transient( 'key1' ), 'value1' );
 
-		// Test direct retrieval of transient timeout is less than current time`
-		$raw_key1_timeout = get_option( '_transient_timeout_key1' );
-		$this->assertTrue( is_int( $raw_key1_timeout ) );
-		$this->assertLessThan( time(), $raw_key1_timeout );
+		// Sleep for two minutes
+		sleep( 2 * MINUTE_IN_SECONDS );
 
-		// Test retrieving of expired transient
-		$fresh_get_key1 = get_transient( 'key1' );
-		$this->assertFalse( $fresh_get_key1 );
+		// Direct retrieval of transient value should return setted value
+		$this->assertEquals( get_option( '_transient_key1' ), 'value1' );
+
+		// Direct retrieval of transient timeout should be integer and less than current time`
+		$raw_key1_timeout_after_sleep = get_option( '_transient_timeout_key1' );
+		$this->assertTrue( is_int( $raw_key1_timeout_after_sleep ) );
+		$this->assertLessThan( time(), $raw_key1_timeout_after_sleep );
+
+		// Getting of expired transient should be false
+		$this->assertFalse( get_transient( 'key1' ) );
+
+		// Direct retrieval of expired transient value should be false
+		$this->assertFalse( get_option( '_transient_key1' ) );
+
+		// Direct retrieval of expired transient timeout should be false
+		$this->assertFalse( get_option( '_transient_timeout_key1' ) );
 	}
 
 	/**
 	 * Test when there is cleaning.
 	 */
 	public function test_with_cleaning() {
-		// Test setting of transient
-		$set_key2 = set_transient( 'key2', 'value2', 5 );
-		$this->assertTrue( $set_key2 );
+		// Setting transient should be true
+		$this->assertTrue( set_transient( 'key2', 'value2', 5 ) );
 
-		// Test retrieving of transient
-		$get_key2 = get_transient( 'key2' );
-		$this->assertEquals( $get_key2, 'value2' );
+		// Direct retrieval of transient value should return setted value
+		$this->assertEquals( get_option( '_transient_key2' ), 'value2' );
+
+		// Direct retrieval of transient timeout should be integer and less than current time`
+		$raw_key2_timeout_before_sleep = get_option( '_transient_timeout_key2' );
+		$this->assertTrue( is_int( $raw_key2_timeout_before_sleep ) );
+		$this->assertLessThan( time(), $raw_key2_timeout_before_sleep );
+
+		// Getting of transient should return setted value
+		$this->assertEquals( get_transient( 'key2' ), 'value2' );
 
 		// Sleep for two minutes
 		sleep( 2 * MINUTE_IN_SECONDS );
@@ -56,16 +72,19 @@ class SingleSiteBasic extends WP_UnitTestCase {
 		// Do cleaning
 		Clean_Expired_Transients::clean();
 
-		// Test direct retrieval of transient value
-		$raw_key2 = get_option( '_transient_key2' );
-		$this->assertFalse( $raw_key2 );
+		// Direct retrieval of expired and cleaned transient value should be false
+		$this->assertFalse( get_option( '_transient_key2' ) );
 
-		// Test direct retrieval of transient timeout is less than current time`
-		$raw_key2_timeout = get_option( '_transient_timeout_key2' );
-		$this->assertFalse( $raw_key2_timeout );
+		// Direct retrieval of expired and cleaned transient timeout should be false
+		$this->assertFalse( get_option( '_transient_timeout_key2' ) );
 
-		// Test retrieving of expired transient
-		$fresh_get_key2 = get_transient( 'key2' );
-		$this->assertFalse( $fresh_get_key2 );
+		// Getting of expired transient and cleaned should be false
+		$this->assertFalse( get_transient( 'key2' ) );
+
+		// Direct retrieval of expired and cleaned transient value should be false
+		$this->assertFalse( get_option( '_transient_key2' ) );
+
+		// Direct retrieval of expired and cleaned transient timeout should be false
+		$this->assertFalse( get_option( '_transient_timeout_key2' ) );
 	}
 }
