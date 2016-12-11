@@ -22,7 +22,7 @@ class SingleSiteBasic extends WP_UnitTestCase {
 		// Direct retrieval of transient timeout should be integer and less than current time`
 		$raw_key1_timeout_before_sleep = get_option( '_transient_timeout_key1' );
 		$this->assertTrue( is_int( $raw_key1_timeout_before_sleep ) );
-		$this->assertGreaterThan( $raw_key1_timeout_before_sleep, time() );
+		$this->assertGreaterThan( time(), $raw_key1_timeout_before_sleep );
 
 		// Getting of transient should return setted value
 		$this->assertEquals( get_transient( 'key1' ), 'value1' );
@@ -36,7 +36,7 @@ class SingleSiteBasic extends WP_UnitTestCase {
 		// Direct retrieval of transient timeout should be integer and less than current time`
 		$raw_key1_timeout_after_sleep = get_option( '_transient_timeout_key1' );
 		$this->assertTrue( is_int( $raw_key1_timeout_after_sleep ) );
-		$this->assertLessThan( $raw_key1_timeout_after_sleep, time() );
+		$this->assertLessThan( time(), $raw_key1_timeout_after_sleep );
 
 		// Getting of expired transient should be false
 		$this->assertFalse( get_transient( 'key1' ) );
