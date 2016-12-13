@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 if ( ! class_exists( 'Clean_Expired_Transients' ) ) :
 /**
  * Clean expired transients.
- * 
+ *
  * @since 1.0
  */
 class Clean_Expired_Transients {
@@ -113,6 +113,11 @@ class Clean_Expired_Transients {
 
 		foreach ( $transients as $transient ) {
 			get_site_transient( $transient );
+		}
+
+		// Clean temporaries
+		if ( is_callable( 'WP_Temporary::clean' ) ) {
+			WP_Temporary::clean();
 		}
 
 		/**
