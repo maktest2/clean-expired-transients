@@ -1,14 +1,14 @@
 <?php
 /**
- * Class SingleSiteBasic
+ * Class Tests_Single_Transient
  *
  * @package Clean_Expired_Transients
  */
 
 /**
- * Test case for single site.
+ * Test case for transient on the single site.
  */
-class SingleSiteBasic extends WP_UnitTestCase {
+class Tests_Single_Transient extends WP_UnitTestCase {
 	/**
 	 * Test default behaviour.
 	 */
